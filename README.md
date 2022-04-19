@@ -5,3 +5,6 @@
 - opencv == 3.1.0
 - onnxruntime-gpu == onnxruntime-win-x64-gpu-1.10.0
 
+## mnist模型运行结果
+![mnist模型运行结果](./test/output.png)
+
