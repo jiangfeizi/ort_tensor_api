@@ -37,7 +37,7 @@ namespace OrtTensorAPI
 		OutputTensor(const std::string& name);
 		~OutputTensor();
 
-		float* m_data;
+		void* m_data;
 	};
 
 	class Session

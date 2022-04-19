@@ -1,1 +1,4 @@
 build/*
+.vscode/*
+ort_tensor_api/build/*
+test/build/*

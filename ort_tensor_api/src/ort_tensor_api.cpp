@@ -1,7 +1,7 @@
 #include <ort_tensor_api/ort_tensor_api.hpp>
-#include <ort_tensor_api/utils.hpp>
 #include <numeric>
 #include <codecvt> 
+#include <config.h>
 
 
 namespace OrtTensorAPI
@@ -36,10 +36,8 @@ namespace OrtTensorAPI
 
 	Session::~Session()
 	{
-		std::cout << "out" << std::endl;
 		if (m_allocator && m_allocator.use_count() == 1)
 		{
-			std::cout << "internal" << std::endl;
 			for (int i = 0; i < m_session->GetInputCount(); i++)
 			{
 				m_allocator->Free(m_session->GetInputName(i, *m_allocator));
@@ -126,7 +124,10 @@ namespace OrtTensorAPI
 			{
 				Ort::Value& output_value = output_values[i];
 				outputs[i].m_shape = output_value.GetTensorTypeAndShapeInfo().GetShape();
-				outputs[i].m_data = output_value.GetTensorMutableData<float>();
+				outputs[i].m_data = output_value.GetTensorMutableData<void>();
+#ifdef DEBUG
+				std::cout << "The type of output is " << output_value.GetTypeInfo().GetTensorTypeAndShapeInfo().GetElementType() << std::endl;
+#endif // DEBUG
 			}
 		}
 		catch (...)

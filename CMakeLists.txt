@@ -1,37 +1,23 @@
 cmake_minimum_required(VERSION 3.0.0)
 
-project(ort_tensor_api)
+project(ort_tensor_api_and_test)
 
-set(ONNXRUNTIME_HOME "" CACHE STRING "The path of onnxruntime.")
-if(ONNXRUNTIME_HOME STREQUAL "")
-    message(FATAL_ERROR "not defined ONNXRUNTIME_HOME")
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+option(DEBUG "create info of debug." ON)
+if(DEBUG)
+    set (CMAKE_CXX_FLAGS_RELEASE "/MD /Zi /Od /Ob2 /DNDEBUG" CACHE STRING "Set C++ Compiler Flags" FORCE)
+    set (CMAKE_SHARED_LINKER_FLAGS_RELEASE "/debug /INCREMENTAL:NO" CACHE STRING "Set C++ Compiler Flags" FORCE)
+    set (CMAKE_EXE_LINKER_FLAGS_RELEASE "/debug /INCREMENTAL:NO" CACHE STRING "Set C++ Compiler Flags" FORCE)
+    add_definitions(-DDEBUG)
 else()
-    message(STATUS "The path of onnxruntime is ${ONNXRUNTIME_HOME}.")
+    set (CMAKE_CXX_FLAGS_RELEASE "/MD /O2 /Ob2 /DNDEBUG" CACHE STRING "Set C++ Compiler Flags" FORCE)
+    set (CMAKE_SHARED_LINKER_FLAGS_RELEASE "/INCREMENTAL:NO" CACHE STRING "Set C++ Compiler Flags" FORCE)
+    set (CMAKE_EXE_LINKER_FLAGS_RELEASE "/INCREMENTAL:NO" CACHE STRING "Set C++ Compiler Flags" FORCE)
 endif()
 
-set(OPENCV_HOME "" CACHE STRING "The path of opencv.")
-if(OPENCV_HOME STREQUAL "")
-    message(FATAL_ERROR "not defined OPENCV_HOME")
-else()
-    message(STATUS "The path of OPENCV_HOME is ${OPENCV_HOME}.")
-endif()
-
-aux_source_directory(${PROJECT_SOURCE_DIR}/src/ DIR_SRCS)
-
-add_library(ort_tensor_api STATIC ${DIR_SRCS})
-add_library(ort_tensor_api::library ALIAS ort_tensor_api)
-
-target_include_directories(ort_tensor_api PUBLIC ${PROJECT_SOURCE_DIR}/include)
-target_include_directories(ort_tensor_api PUBLIC ${ONNXRUNTIME_HOME}/include)
-target_include_directories(ort_tensor_api PRIVATE ${OPENCV_HOME}/include)
-
-target_link_directories(ort_tensor_api PUBLIC ${ONNXRUNTIME_HOME}/lib)
-target_link_directories(ort_tensor_api PRIVATE ${OPENCV_HOME}/lib)
-
-target_link_libraries(ort_tensor_api PRIVATE onnxruntime)
-target_link_libraries(ort_tensor_api PRIVATE opencv_core310 opencv_imgproc310)
-
-
-
+add_subdirectory(${PROJECT_SOURCE_DIR}/ort_tensor_api ${PROJECT_SOURCE_DIR}/ort_tensor_api/build) 
+add_subdirectory(${PROJECT_SOURCE_DIR}/test ${PROJECT_SOURCE_DIR}/test/build) 
 
 

@@ -1,0 +1,2 @@
+#define MODEL_NAME "@PROJECT_SOURCE_DIR@/model.onnx"
+#define IMAGE_NAME "@PROJECT_SOURCE_DIR@/8.png"
