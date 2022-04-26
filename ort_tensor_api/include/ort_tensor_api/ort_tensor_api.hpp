@@ -1,8 +1,8 @@
 #pragma once
 
 #define OK										0L									
-#define CREATE_SESSION_ERROR					1L				//´´½¨sessionÊ§°Ü	
-#define INFERENCE_ERROR							2L				//ÍÆÀíÊ§°Ü							
+#define CREATE_SESSION_ERROR					1L				//ï¿½ï¿½ï¿½ï¿½sessionÊ§ï¿½ï¿½	
+#define INFERENCE_ERROR							2L				//ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½							
 
 
 #include <string>
@@ -10,6 +10,7 @@
 #include <onnxruntime_c_api.h>
 #include <onnxruntime_cxx_api.h>
 #include <opencv2/opencv.hpp>
+
 
 
 namespace OrtTensorAPI

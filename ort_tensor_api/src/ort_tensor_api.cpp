@@ -3,7 +3,6 @@
 #include <codecvt> 
 #include <config.h>
 
-
 namespace OrtTensorAPI
 {
 	NodeInfo::NodeInfo(const std::string& name, const std::vector<int64_t>& shape) : m_name(name), m_shape(shape)
@@ -186,7 +185,14 @@ namespace OrtTensorAPI
 				}
 
 				cv::Mat resize_image;
-				cv::resize(input, resize_image, cv::Size(m_resize_width, m_resize_height), 0, 0, interpolation);
+				if (input.cols != m_resize_width || input.rows != m_resize_height)
+				{
+					cv::resize(input, resize_image, cv::Size(m_resize_width, m_resize_height), 0, 0, interpolation);
+				}
+				else
+				{
+					resize_image = input;
+				}
 
 				output = cv::Mat::zeros(cv::Size(m_target_width, m_target_height), input.type());
 
@@ -201,7 +207,14 @@ namespace OrtTensorAPI
 				m_resize_height = m_target_height;
 				m_dw = 0;
 				m_dh = 0;
-				cv::resize(input, output, cv::Size(m_target_width, m_target_height), 0, 0, interpolation);
+				if (input.cols != m_target_width || input.rows != m_target_height)
+				{
+					cv::resize(input, output, cv::Size(m_target_width, m_target_height), 0, 0, interpolation);
+				}
+				else
+				{
+					output = input.clone();
+				}
 			}
 			return output;
 		}
@@ -217,7 +230,14 @@ namespace OrtTensorAPI
 			m_dh = (m_target_height - m_resize_height) / 2;
 
 			cv::Mat resize_image;
-			cv::resize(input, resize_image, cv::Size(m_resize_width, m_resize_height), 0, 0, interpolation);
+			if (input.cols != m_resize_width || input.rows != m_resize_height)
+			{
+				cv::resize(input, resize_image, cv::Size(m_resize_width, m_resize_height), 0, 0, interpolation);
+			}
+			else
+			{
+				resize_image = input;
+			}
 
 			cv::Mat output;
 			output = cv::Mat::zeros(cv::Size(m_target_width, m_target_height), input.type());
